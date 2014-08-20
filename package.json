@@ -1,6 +1,6 @@
 {
   "name": "gulp-csscomb-lint",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Lint CSS coding style with CSScomb",
   "main": "index.js",
   "scripts": {
