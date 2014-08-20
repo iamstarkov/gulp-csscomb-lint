@@ -1,0 +1,28 @@
+{
+  "name": "gulp-csscomb-lint",
+  "version": "0.0.0",
+  "description": "Lint CSS coding style with CSScomb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/matmuchrapna/gulp-csscomb-lint"
+  },
+  "keywords": [
+    "gulp",
+    "gulpplugin",
+    "gulpfriendly",
+    "css",
+    "csscomb",
+    "lint",
+    "linting"
+  ],
+  "author": "Vladimir Starkov <matmuchrapna@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/matmuchrapna/gulp-csscomb-lint/issues"
+  },
+  "homepage": "https://github.com/matmuchrapna/gulp-csscomb-lint"
+}
