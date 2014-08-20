@@ -10,7 +10,7 @@ Install via [npm](https://npmjs.org/package/gulp-csscomb-lint):
 npm i --save-dev gulp-csscomb-lint
 ```
 
-Example:
+## Usage
 
 ```js
 var gulp = require('gulp');

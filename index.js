@@ -4,12 +4,13 @@ var gutil = require('gulp-util');
 var through = require('through2');
 var fs = require('fs');
 var Comb = require('csscomb');
-var _ = require('lodash');
 
-module.exports = function (config) {
-    var out = [];
-
-    log = log.bind(null, options.verbose);
+module.exports = function (config, verbose) {
+    var out = {
+        count: 0,
+        files: [],
+        errors: {}
+    };
 
     return through.obj(function (file, enc, cb) {
         if (file.isNull()) {
@@ -27,41 +28,44 @@ module.exports = function (config) {
             return cb();
         }
 
-        log('Processing ' + gutil.colors.magenta(file.path));
-
         var comb = new Comb(getConfig(config, file, cb) || 'csscomb');
 
         try {
             var processed = comb.processString(file.contents.toString('utf8'), { filename: file.path });
+        } catch (err) {
+            var filename = path.relative(file.cwd, file.path)
 
-            if (processed !== file.contents.toString('utf8')) {
-                out.push('! ' + file.path);
-            }
+            out.files.push(filename);
+            out.errors[filename] = err.message;
+
             this.push(file);
             return cb();
-        } catch (err) {
-            this.emit('error', new gutil.PluginError('gulp-csscomb-lint', err));
         }
 
         this.push(file);
         return cb();
     }, function(cb) {
 
-        if (out.length > 0) {
-            this.emit('error', new gutil.PluginError('gulp-csscomb-lint', [
+        if (out.files.length > 0) {
+            var message = [
                 gutil.colors.red('\nCSScomb linting failed for these files:'),
-                out.join('\n')
-            ].join('\n')));
+                out.files.map(function(filename) {
+                    return filename;
+                }).join('\n'),
+                out.files.map(function(filename) {
+                    return [
+                        '\n' + filename,
+                        out.errors[filename]
+                    ].join('\n');
+                }).join('\n'),
+                '\nTotal: ' + out.files.length + ' bad files.'
+            ].join('\n');
+
+            this.emit('error', new gutil.PluginError('gulp-csscomb-lint', message));
         }
         cb();
     });
 };
-
-function log(verbose, string) {
-    if (verbose) {
-        gutil.log('gulp-csscomb-lint', string);
-    }
-}
 
 function invalidExtension(file) {
     var validExtensions = ['.css', '.sass', '.scss', '.less'];
@@ -84,8 +88,6 @@ function getConfig(config, file, cb) {
             this.emit('error', new gutil.PluginError('gulp-csscomb-lint', 'Failed to load configuration from ' + configFile + '. ' + err.message));
             return cb();
         }
-
-        log('Using configuration file ' + gutil.colors.magenta(configFile));
     }
 
     return config;
