@@ -28,7 +28,11 @@ module.exports = function (config, verbose) {
         var content = file.contents.toString('utf8');
         var filename = path.relative(file.cwd, file.path)
 
-        if (content !== comb.processString(content, { filename: file.path })) {
+        try {
+            if (content !== comb.processString(content, { filename: file.path })) {
+                badFiles.push(filename);
+            }
+        } catch (e) {
             badFiles.push(filename);
         }
 
