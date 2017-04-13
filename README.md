@@ -1,5 +1,7 @@
 # gulp-csscomb-lint
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/iamstarkov/gulp-csscomb-lint.svg)](https://greenkeeper.io/)
+
 > Lint CSS coding style with [CSScomb](https://npmjs.org/package/csscomb).
 
 ## Installation
